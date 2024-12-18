@@ -14,8 +14,9 @@ body{
     border-right: 10px solid black;
     border-left: 10px solid black;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    flex-direction: column;
 }
 
 .btn_new_profile{
@@ -30,6 +31,7 @@ body{
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 .btn_new_profile span{
@@ -40,4 +42,16 @@ body{
     cursor: pointer;
     scale: 105%;
     background-color: hsl(0, 59%, 51%);
+}
+
+.logo_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.logo_container .logo{
+    font-weight: 900;
 }
