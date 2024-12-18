@@ -1,0 +1,43 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100%;
+}
+
+.container{
+    box-sizing: border-box;
+    max-width: 90%;
+    min-height: 100vh;
+    margin: 0 auto;
+    border-right: 10px solid black;
+    border-left: 10px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn_new_profile{
+    padding: 1rem 1.5rem;
+    letter-spacing: 0.1rem;
+    border-radius: 1rem;
+    font-weight: bold;
+    border: none;
+    background-color: hsl(0, 59%, 41%);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn_new_profile span{
+    font-size: 2rem;
+}
+
+.btn_new_profile:hover{
+    cursor: pointer;
+    scale: 105%;
+    background-color: hsl(0, 59%, 51%);
+}
