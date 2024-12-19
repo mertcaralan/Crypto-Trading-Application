@@ -1,24 +1,28 @@
+/* body */
 body{
     margin: 0;
     padding: 0;
     font-size: 24px;
     font-family: Arial, Helvetica, sans-serif;
     min-height: 100%;
+    background-color: black;
 }
-
+/* container */
 .container{
     box-sizing: border-box;
     max-width: 90%;
     min-height: 100vh;
     margin: 0 auto;
-    border-right: 10px solid black;
-    border-left: 10px solid black;
+    border-right: 10px solid brown;
+    border-left: 10px solid brown;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
+    background-color: black;
+    color: white;
 }
-
+/* button */
 .btn{
     padding: 1rem 1.5rem;
     letter-spacing: 0.1rem;
@@ -45,7 +49,7 @@ body{
     scale: 105%;
     background-color: hsl(0, 59%, 51%);
 }
-
+/* button for add */
 .btn.add{
     background-color: hsl(0, 0%, 0%);
     margin-bottom: 0;
@@ -54,19 +58,22 @@ body{
 .btn.add:hover{
     background-color: hsl(0, 0%, 10%);
 }
-
+/* logo container */
 .logo_container{
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    margin-top: 1rem;
+    padding: 1rem 0;
+    min-width: 100%;
+    border-bottom: 10px solid brown;
+    margin-bottom: 1rem;
 }
 
 .logo_container .logo{
     font-weight: 900;
 }
-
+/* user container */
 .user_container{
     background-color: hsl(0, 59%, 41%);
     color: white;
@@ -88,7 +95,7 @@ body{
     top: -6rem;
     right: -6rem;
 }
-
+/* adding new profile container */
 .new_profile_container{
     display: flex;
     justify-content: center;
