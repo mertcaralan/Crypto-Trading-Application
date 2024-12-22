@@ -1,16 +1,16 @@
-/* body */
-body{
+/* General Body */
+body {
     margin: 0;
     padding: 0;
     font-size: 24px;
     font-family: 'Poppins', sans-serif;
     min-height: 100%;
-    background-color: black;
-    background: linear-gradient(135deg, black, #1a1a1a);
-
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    color: white;
 }
-/* container */
-.container{
+
+/* Container */
+.container {
     box-sizing: border-box;
     max-width: 90%;
     min-height: 100vh;
@@ -22,12 +22,13 @@ body{
     align-items: center;
     flex-direction: column;
     background-color: black;
-    color: white;
     padding: 2rem 1rem;
-
+    box-shadow: 0 10px 25px rgba(165, 42, 42, 0.6), 0 -5px 15px rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
 }
-/* button */
-.btn{
+
+/* Button */
+.btn {
     padding: 1rem 1.5rem;
     letter-spacing: 0.1rem;
     border-radius: 1.5rem;
@@ -43,39 +44,60 @@ body{
     min-width: 12rem;
     font-size: 1.5rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-
 }
 
-.btn span{
+.btn span {
     font-size: 2rem;
 }
 
-.btn:hover{
+.btn:hover {
     cursor: pointer;
-    scale: 105%;
+    scale: 1.05;
+    transform: rotate(2deg);
     background-color: hsl(0, 59%, 51%);
-    box-shadow: 0px 8px 15px rgba(255, 0, 0, 0.4);
-    transition: transform 0.3s ease, background-color 0.3s ease;
-
+    box-shadow: 0px 10px 20px rgba(255, 0, 0, 0.5);
 }
-/* button for add */
-.btn.add{
+
+.btn:active {
+    animation: bounce 0.3s ease;
+}
+
+@keyframes bounce {
+    0% { transform: scale(0.95); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Add Button */
+.btn.add {
     background-color: hsl(0, 0%, 0%);
     margin-bottom: 0;
 }
 
-
-.btn.add:hover{
+.btn.add:hover {
     background-color: hsl(0, 0%, 10%);
 }
-.container {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
-    border-right: 8px solid rgba(165, 42, 42, 0.8);
-    border-left: 8px solid rgba(165, 42, 42, 0.8);
+
+.btn.add:active {
+    transform: scale(0.98);
 }
-/* logo container */
-.logo_container{
+
+/* New Profile Button */
+.btn.new_profile {
+    background: linear-gradient(90deg, hsl(0, 59%, 51%), hsl(0, 59%, 41%));
+    color: white;
+    font-size: 1.8rem;
+    border: 2px solid hsl(0, 59%, 51%);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn.new_profile:hover {
+    background: hsl(0, 59%, 41%);
+    transform: scale(1.05);
+}
+
+/* Logo Container */
+.logo_container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,18 +108,32 @@ body{
     margin-bottom: 1rem;
 }
 
-.logo_container .logo{
+.logo_container .logo {
     font-size: 3rem;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     color: hsl(0, 59%, 51%);
     font-weight: 900;
-}
-.logo_container .logo:hover {
-    transform: rotate(-3deg) scale(1.05);
     transition: all 0.3s ease-in-out;
 }
-/* user container */
-.user_container{
+
+.logo_container .logo:hover {
+    transform: rotate(-3deg) scale(1.05);
+    animation: pulse 0.6s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 2px 2px 5px rgba(255, 0, 0, 0.5);
+    }
+    50% {
+        transform: scale(1.1);
+        text-shadow: 2px 2px 15px rgba(255, 0, 0, 0.8);
+    }
+}
+
+/* User Container */
+.user_container {
     background-color: hsl(0, 59%, 41%);
     color: white;
     font-weight: 600;
@@ -109,22 +145,24 @@ body{
     flex-direction: column;
     padding: 1rem;
     position: relative;
-}
-.user_container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(255, 0, 0, 0.4);
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.user_container .close_img{
+.user_container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+}
+
+.user_container .close_img {
     cursor: pointer;
     scale: 0.2;
     position: absolute;
     top: -6rem;
     right: -6rem;
 }
-/* adding new profile container */
-.new_profile_container{
+
+/* New Profile Container */
+.new_profile_container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,21 +176,45 @@ body{
     letter-spacing: 0.1rem;
     border-radius: 1.5rem;
     padding: 2rem 1.5rem;
-  
+    animation: fadeIn 0.8s ease-in-out;
 }
 
-.new_profile_container #new_user_input{
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* New User Input */
+.new_profile_container #new_user_input {
     border: none;
     padding: 1.2rem 1rem;
     border-radius: 1rem;
+    font-size: 1.2rem;
+    outline: none;
+    width: 100%;
+    max-width: 400px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid hsl(0, 59%, 41%);
+    color: white;
+    letter-spacing: 0.1rem;
+    transition: all 0.3s ease-in-out; 
 }
 
-.new_profile_container #new_user_input:{
-    scale: 3;
+.new_profile_container #new_user_input:focus {
+    border-color: hsl(0, 59%, 51%); 
+    box-shadow: 0px 0px 15px hsl(0, 59%, 51%); 
+    background-color: rgba(255, 255, 255, 0.2); 
+    transform: scale(1.05); 
 }
 
-.container, .btn, .new_profile_container {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+.new_profile_container #new_user_input::placeholder {
+    color: rgba(255, 255, 255, 0.6); 
+    transition: all 0.3s ease-in-out;
+}
+
+.new_profile_container #new_user_input:focus::placeholder {
+    color: rgba(255, 255, 255, 0.9); 
+    font-style: normal; 
 }
 
 
