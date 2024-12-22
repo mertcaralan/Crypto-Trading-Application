@@ -6,6 +6,8 @@ body{
     font-family: 'Poppins', sans-serif;
     min-height: 100%;
     background-color: black;
+    background: linear-gradient(135deg, black, #1a1a1a);
+
 }
 /* container */
 .container{
@@ -30,7 +32,7 @@ body{
     letter-spacing: 0.1rem;
     border-radius: 1.5rem;
     font-weight: bold;
-    border: none;
+    border: 2px solid hsl(0, 59%, 41%);
     background-color: hsl(0, 59%, 41%);
     color: white;
     display: flex;
@@ -40,6 +42,8 @@ body{
     margin-bottom: 1rem;
     min-width: 12rem;
     font-size: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+
 }
 
 .btn span{
@@ -50,6 +54,7 @@ body{
     cursor: pointer;
     scale: 105%;
     background-color: hsl(0, 59%, 51%);
+    box-shadow: 0px 8px 15px rgba(255, 0, 0, 0.4);
     transition: transform 0.3s ease, background-color 0.3s ease;
 
 }
@@ -59,8 +64,15 @@ body{
     margin-bottom: 0;
 }
 
+
 .btn.add:hover{
     background-color: hsl(0, 0%, 10%);
+}
+.container {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    border-right: 8px solid rgba(165, 42, 42, 0.8);
+    border-left: 8px solid rgba(165, 42, 42, 0.8);
 }
 /* logo container */
 .logo_container{
@@ -75,7 +87,14 @@ body{
 }
 
 .logo_container .logo{
+    font-size: 3rem;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    color: hsl(0, 59%, 51%);
     font-weight: 900;
+}
+.logo_container .logo:hover {
+    transform: rotate(-3deg) scale(1.05);
+    transition: all 0.3s ease-in-out;
 }
 /* user container */
 .user_container{
@@ -90,6 +109,11 @@ body{
     flex-direction: column;
     padding: 1rem;
     position: relative;
+}
+.user_container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(255, 0, 0, 0.4);
+    transition: all 0.3s ease-in-out;
 }
 
 .user_container .close_img{
@@ -106,15 +130,15 @@ body{
     align-items: center;
     flex-direction: column;
     gap: 1.5rem;
-    background-color: hsl(0, 59%, 41%);
-    padding: 1rem;
+    background: linear-gradient(135deg, hsl(0, 59%, 41%), hsl(0, 59%, 51%));
+    box-shadow: 0 8px 15px rgba(255, 0, 0, 0.3);
     color: white;
     font-weight: bold;
     font-size: 1.5rem;
     letter-spacing: 0.1rem;
     border-radius: 1.5rem;
     padding: 2rem 1.5rem;
-
+  
 }
 
 .new_profile_container #new_user_input{
