@@ -39,7 +39,7 @@ $(function () {
                     <div class="username-box">${newProfileName}</div>
                 </div>
             `;
-            $('.users').append(newUser);
+            $('.users').prepend(newUser);
 
             // State'i kaydet
             localStorage.setItem("states", JSON.stringify(states));
