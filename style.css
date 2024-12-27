@@ -1,4 +1,4 @@
-/* General Body */
+/* General Styles */
 body {
     margin: 0;
     padding: 0;
@@ -9,7 +9,7 @@ body {
     color: white;
 }
 
-/* Container */
+/* Container Styling */
 .container {
     box-sizing: border-box;
     max-width: 90%;
@@ -18,21 +18,25 @@ body {
     border-right: 10px solid brown;
     border-left: 10px solid brown;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    flex-direction: column;
     background-color: black;
     padding: 2rem 1rem;
-    box-shadow: 0 10px 25px rgba(165, 42, 42, 0.6), 0 -5px 15px rgba(0, 0, 0, 0.4);
     border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(165, 42, 42, 0.6), 0 -5px 15px rgba(0, 0, 0, 0.4);
+    position: relative;
 }
 
-/* Button */
+/* Button Styling */
 .btn {
     padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    min-width: 12rem;
+    font-size: 1.5rem;
+    font-weight: bold;
     letter-spacing: 0.1rem;
     border-radius: 1.5rem;
-    font-weight: bold;
     border: 2px solid hsl(0, 59%, 41%);
     background-color: hsl(0, 59%, 41%);
     color: white;
@@ -40,9 +44,6 @@ body {
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1rem;
-    min-width: 12rem;
-    font-size: 1.5rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
@@ -68,7 +69,7 @@ body {
     100% { transform: scale(1); }
 }
 
-/* Add Button */
+/* Specialized Buttons */
 .btn.add {
     background-color: hsl(0, 0%, 0%);
     margin-bottom: 0;
@@ -82,8 +83,10 @@ body {
     transform: scale(0.98);
 }
 
-/* New Profile Button */
 .btn.new_profile {
+    position: absolute;
+    bottom: 50px;
+    margin: auto;
     background: linear-gradient(90deg, hsl(0, 59%, 51%), hsl(0, 59%, 41%));
     color: white;
     font-size: 1.8rem;
@@ -110,9 +113,9 @@ body {
 
 .logo_container .logo {
     font-size: 3rem;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    color: hsl(0, 59%, 51%);
     font-weight: 900;
+    color: hsl(0, 59%, 51%);
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease-in-out;
 }
 
@@ -140,12 +143,13 @@ body {
     letter-spacing: 0.1rem;
     border-radius: 1.5rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     padding: 1rem;
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    scale:0.8;
 }
 
 .user_container:hover {
@@ -154,29 +158,30 @@ body {
 }
 
 .user_container .close_img {
-    cursor: pointer;
-    scale: 0.2;
     position: absolute;
     top: -6rem;
     right: -6rem;
+    scale: 0.2;
+    cursor: pointer;
 }
 
 /* New Profile Container */
 .new_profile_container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     gap: 1.5rem;
-    background: linear-gradient(135deg, hsl(0, 59%, 41%), hsl(0, 59%, 51%));
-    box-shadow: 0 8px 15px rgba(255, 0, 0, 0.3);
-    color: white;
-    font-weight: bold;
-    font-size: 1.5rem;
-    letter-spacing: 0.1rem;
-    border-radius: 1.5rem;
     padding: 2rem 1.5rem;
+    background: linear-gradient(135deg, hsl(0, 59%, 41%), hsl(0, 59%, 51%));
+    border-radius: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 0.1rem;
+    box-shadow: 0 8px 15px rgba(255, 0, 0, 0.3);
     animation: fadeIn 0.8s ease-in-out;
+    position: absolute;
 }
 
 @keyframes fadeIn {
@@ -186,17 +191,16 @@ body {
 
 /* New User Input */
 .new_profile_container #new_user_input {
-    border: none;
-    padding: 1.2rem 1rem;
-    border-radius: 1rem;
-    font-size: 1.2rem;
-    outline: none;
     width: 100%;
     max-width: 400px;
-    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1.2rem 1rem;
+    font-size: 1.2rem;
+    border-radius: 1rem;
     border: 1px solid hsl(0, 59%, 41%);
+    background-color: rgba(255, 255, 255, 0.1);
     color: white;
     letter-spacing: 0.1rem;
+    outline: none;
     transition: all 0.3s ease-in-out; 
 }
 
@@ -217,4 +221,16 @@ body {
     font-style: normal; 
 }
 
+.empty_text{
+    color: white;
+}
 
+.users{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 100px;
+}

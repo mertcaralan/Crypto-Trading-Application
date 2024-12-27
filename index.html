@@ -4,39 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Crypto Trading Application</title>
+
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- Favicon -->
     <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- JavaScript Files -->
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
     <script src="db.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 <body>
     <div class="container">
-        <!-- Logo Container -->
-        <div class="logo_container">
+        <!-- Logo Section -->
+        <header class="logo_container">
             <span class="logo">CTIS</span>
             <span class="logo-name">Crypto Trading Information System</span>
-        </div>
+        </header>
         
-        <!-- User Container -->
-        <div class="user_container">
-            <img src="icons/close-ellipse-svgrepo-com.svg" class="close_img" alt="Close icon">
-            <img src="icons/user-icon-svgrepo-com.svg" alt="User icon">
-            <div class="username-box">NAME</div>
-        </div>
+        <!-- User Profiles Section -->
+        <section class="users">
+            <!-- User containers will be dynamically added here -->
+        </section>
 
-        <!-- Profile Form -->
+        <!-- New Profile Form -->
         <div class="new_profile_container">
             <input type="text" id="new_user_input" placeholder="Enter the new profile name">
-            <button type="button" class="btn add"><i class="fas fa-plus"></i> ADD</button>
+            <button type="button" class="btn add">
+                <i class="fas fa-plus"></i> Add
+            </button>
         </div>
 
         <!-- New Profile Button -->
         <button type="button" class="btn new_profile">
-            <span>+</span> NEW PROFILE
+            <span>+</span> New Profile
         </button>
     </div>
 </body>
 </html>
-
