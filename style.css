@@ -428,6 +428,10 @@
   .final_wallet_value {
     animation: heartbeat 1.2s infinite;
   }
+
+  .coin_heartbeat{
+    animation: heartbeat 1.2s infinite;
+  }
   @keyframes heartbeat {
     0%   { transform: scale(1); }
     25%  { transform: scale(1.1); }

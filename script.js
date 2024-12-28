@@ -197,7 +197,7 @@ $(function () {
               ${coins.map(c => `
                 <img src="${c.image}" data-code="${c.code}"
                      title="${c.name}"
-                     class="coin_icon ${c.code === user.selectedCoin ? "selected_coin_anim":""}">
+                     class="coin_icon ${c.code === user.selectedCoin ? "coin_heartbeat":""}">
               `).join("")}
             </div>
     
