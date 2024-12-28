@@ -103,16 +103,14 @@ body {
 .logo_container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 0;
-    min-width: 100%;
-    border-bottom: 10px solid brown;
-    margin-bottom: 1rem;
+    align-items: flex-start;
+    padding: 0.2rem 0;
+    align-self: flex-start;
+    flex-direction: column;
 }
 
 .logo_container .logo {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 900;
     color: hsl(0, 59%, 51%);
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
@@ -233,4 +231,87 @@ body {
     align-items: center;
     gap: 20px;
     margin-bottom: 100px;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.nav_user_container,.play_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    background-color: hsl(0, 59%, 41%);
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    cursor: pointer;
+    gap: 1rem;
+    border : none;
+    width: 13.5rem;
+}
+
+.nav_user_container img,.play_btn img{
+    height: 2rem;
+}
+
+.right_nav,.buttons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.trade_page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.coins_part{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.coins_part img,.selected_coin_part img{
+    height: 3rem;
+}
+
+.selected_coin_part{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+}
+
+.bottom_part{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.trading_part,.detailed_wallet_part{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
+}
+
+.detailed_wallet_part table{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
