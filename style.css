@@ -1,408 +1,483 @@
 /* Temel Reset */
 * {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-  padding: 0;
-  font-size: 24px;
-  font-family: 'Poppins', sans-serif;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a1a, #333);
-  color: white;
-}
-
-/* Ana container */
-.container {
-  max-width: 90%;
-  min-height: 100vh;
-  margin: 0 auto;
-  border-right: 10px solid brown;
-  border-left: 10px solid brown;
-  display: flex;
-  flex-direction: column;
-  background-color: black;
-  padding: 2rem 1rem;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(165, 42, 42, 0.6),
-              0 -5px 15px rgba(0, 0, 0, 0.4);
-  position: relative;
-}
-
-/* Navbar */
-.navbar {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.logo_container {
-  display: flex;
-  flex-direction: column;
-  padding: 0.2rem;
-}
-.logo {
-  font-size: 2rem;
-  font-weight: 900;
-  color: hsl(0, 59%, 51%);
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s ease-in-out;
-}
-.logo:hover {
-  transform: rotate(-3deg) scale(1.05);
-  animation: pulse 0.6s infinite;
-}
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    text-shadow: 2px 2px 5px rgba(255, 0, 0, 0.5);
+    box-sizing: border-box;
   }
-  50% {
-    transform: scale(1.1);
-    text-shadow: 2px 2px 15px rgba(255, 0, 0, 0.8);
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    color: white;
   }
-}
+  
+  /* Ana container */
+  .container {
+    max-width: 90%;
+    min-height: 100vh;
+    margin: 0 auto;
+    border-right: 10px solid brown;
+    border-left: 10px solid brown;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    padding: 2rem 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(165, 42, 42, 0.6),
+                0 -5px 15px rgba(0, 0, 0, 0.4);
+    position: relative;
+  }
+  
+  /* Navbar */
+  .navbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo_container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.2rem;
+  }
+  .logo {
+    font-size: 2rem;
+    font-weight: 900;
+    color: hsl(0, 59%, 51%);
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease-in-out;
+  }
+  .logo:hover {
+    transform: rotate(-3deg) scale(1.05);
+    animation: pulse 0.6s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      text-shadow: 2px 2px 5px rgba(255, 0, 0, 0.5);
+    }
+    50% {
+      transform: scale(1.1);
+      text-shadow: 2px 2px 15px rgba(255, 0, 0, 0.8);
+    }
+  }
+  
+  /* Team Members (ilk sayfa) */
+  .team_members {
+    text-align: center;
+  }
+  .team_members ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+  .team_members li {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Genel butonlar */
+  .btn {
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    min-width: 12rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    border-radius: 1.5rem;
+    border: 2px solid hsl(0, 59%, 41%);
+    background-color: hsl(0, 59%, 41%);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: 0.3s ease;
+  }
+  .btn span {
+    font-size: 2rem;
+  }
+  .btn:hover {
+    cursor: pointer;
+    transform: scale(1.05) rotate(1deg);
+    background-color: hsl(0, 59%, 51%);
+    box-shadow: 0px 10px 20px rgba(255, 0, 0, 0.5);
+  }
+  
+  /* Profiles (users) sayfası */
+  .users {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+  }
+  .user_container {
+    background-color: hsl(0, 59%, 41%);
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    border-radius: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    scale: 0.8; /* Hafif küçük görünsün */
+  }
+  .user_container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+  }
+  .user_container .close_img {
+    position: absolute;
+    top: -6rem;
+    right: -6rem;
+    scale: 0.2;
+    cursor: pointer;
+  }
+  .username-box {
+    margin-top: 0.5rem;
+  }
+  .new_profile{
+    position: absolute;
+    bottom: 10px;
+    align-self: center;
+  }
+  /* Yeni Profil Popup */
+  .new_profile_container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem 1.5rem;
+    background: linear-gradient(135deg, hsl(0, 59%, 41%), hsl(0, 59%, 51%));
+    border-radius: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 0.1rem;
+    box-shadow: 0 8px 15px rgba(255, 0, 0, 0.3);
+    animation: fadeIn 0.8s ease-in-out;
+    position: absolute;
+    top: 10px;
+    right:30%;
+    z-index: 999;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .new_profile_container #new_user_input {
+    width: 100%;
+    max-width: 300px;
+    padding: 1.2rem 1rem;
+    font-size: 1rem;
+    border-radius: 1rem;
+    border: 1px solid hsl(0, 59%, 41%);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+  }
+  .new_profile_container #new_user_input:focus {
+    border-color: hsl(0, 59%, 51%);
+    box-shadow: 0px 0px 15px hsl(0, 59%, 51%);
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+  }
+  
+  /* Trade Page */
+  .trade_page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .right_nav {
+    display: flex;
+    gap: 1rem;
+  }
+  .nav_user_container {
+    display: flex;
+    align-items: center;
+    background-color: hsl(0, 59%, 41%);
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    border-radius: 1.5rem;
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  .nav_user_container img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+  
+  /* Next/Play butonları */
+  .buttons {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .play_btn {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    border-radius: 1.5rem;
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+    border: none;
+    cursor: pointer;
+    background-color: hsl(0, 59%, 41%);
+  }
+  .play_btn img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+  
+  /* Coin icons */
+  .coins_part {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .coin_icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    transition: transform 0.3s;
+  }
+  .coin_icon:hover {
+    transform: scale(1.2);
+  }
+  .selected_coin_part {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .selected_coin_part img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+  
+  .main_part{
+    width: 90%;
+  }
+  /* Basit graf alanı */
+  .graph_part {
+    margin-top: 1rem;
+    width: 100%;
+    height: 300px;
+    border: 1px solid #aaa;
+    position: relative;
+    overflow: hidden;
+  }
+  .candle {
+    position: absolute;
+    width: 5px;
+    background-color: green;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .candle.red {
+    background-color: red;
+  }
+  .candle:hover {
+    transform: scale(1.2);
+    z-index: 9;
+  }
+  .last_close_line {
+    position: absolute;
+    width: 100%;
+    border-top: 1px dashed gray;
+  }
+  
+  .last_close_label {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 4px 8px;
+    font-size: 14px;
+    border: 1px dashed gray;
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 999;
+  }
+  
+  /* Tooltip */
+  .candle_tooltip {
+    position: absolute;
+    display: none;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 999;
+  }
+  
+  /* Wallet */
+  .wallet_part {
+    margin-top: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  .bottom_part {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .trading_part, .detailed_wallet_part {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  .trading_part h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .buy_sell_buttons {
+    display: flex;
+    border: 1px solid white;
+    width: fit-content;
+    justify-content: center;
+    border-radius: 0.5rem;
+  }
+  .buy_btn, .sell_btn {
+    padding: 0.8rem 1.2rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+  }
+  .buy_btn {
+    background-color: black;
+  }
+  .buy_btn:hover {
+    background-color: grey;
+  }
+  .sell_btn {
+    background-color: white;
+    color: black;
+  }
+  .sell_btn:hover {
+    background-color: grey;
+  }
+  .amount_part {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
-/* Team Members (ilk sayfa) */
-.team_members {
-  text-align: center;
-}
-.team_members ul {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 1rem;
-}
-.team_members li {
-  margin-bottom: 0.5rem;
-}
-
-/* Genel butonlar */
-.btn {
-  padding: 1rem 1.5rem;
-  margin-bottom: 1rem;
-  min-width: 12rem;
-  font-size: 1.4rem;
-  font-weight: bold;
-  letter-spacing: 0.1rem;
-  border-radius: 1.5rem;
-  border: 2px solid hsl(0, 59%, 41%);
-  background-color: hsl(0, 59%, 41%);
-  color: white;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: 0.3s ease;
-}
-.btn span {
-  font-size: 2rem;
-}
-.btn:hover {
-  cursor: pointer;
-  transform: scale(1.05) rotate(1deg);
-  background-color: hsl(0, 59%, 51%);
-  box-shadow: 0px 10px 20px rgba(255, 0, 0, 0.5);
-}
-
-/* Profiles (users) sayfası */
-.users {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 100px;
-}
-.user_container {
-  background-color: hsl(0, 59%, 41%);
-  color: white;
-  font-weight: 600;
-  letter-spacing: 0.1rem;
-  border-radius: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem;
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  scale: 0.8; /* Hafif küçük görünsün */
-}
-.user_container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
-}
-.user_container .close_img {
-  position: absolute;
-  top: -6rem;
-  right: -6rem;
-  scale: 0.2;
-  cursor: pointer;
-}
-.username-box {
-  margin-top: 0.5rem;
-}
-
-/* Yeni Profil Popup */
-.new_profile_container {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 2rem 1.5rem;
-  background: linear-gradient(135deg, hsl(0, 59%, 41%), hsl(0, 59%, 51%));
-  border-radius: 1.5rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  letter-spacing: 0.1rem;
-  box-shadow: 0 8px 15px rgba(255, 0, 0, 0.3);
-  animation: fadeIn 0.8s ease-in-out;
-  position: absolute;
-  top: 150px; /* pop-up konumu */
-  z-index: 999;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.new_profile_container #new_user_input {
-  width: 100%;
-  max-width: 300px;
-  padding: 1.2rem 1rem;
-  font-size: 1rem;
-  border-radius: 1rem;
-  border: 1px solid hsl(0, 59%, 41%);
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  outline: none;
-}
-.new_profile_container #new_user_input:focus {
-  border-color: hsl(0, 59%, 51%);
-  box-shadow: 0px 0px 15px hsl(0, 59%, 51%);
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: scale(1.05);
-}
-
-/* Trade Page */
-.trade_page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-.right_nav {
-  display: flex;
-  gap: 1rem;
-}
-.nav_user_container {
-  display: flex;
-  align-items: center;
-  background-color: hsl(0, 59%, 41%);
-  color: white;
-  font-weight: 600;
-  letter-spacing: 0.1rem;
-  border-radius: 1.5rem;
-  padding: 0.5rem 1rem;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-.nav_user_container img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
-
-/* Next/Play butonları */
-.buttons {
-  display: flex;
-  gap: 1rem;
-  margin: 1rem 0;
-}
-.play_btn {
-  display: flex;
-  align-items: center;
-  font-size: 1.2rem;
-  border-radius: 1.5rem;
-  padding: 0.5rem 1rem;
-  gap: 0.5rem;
-  border: none;
-  cursor: pointer;
-  background-color: hsl(0, 59%, 41%);
-}
-.play_btn img {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
-
-/* Coin icons */
-.coins_part {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-}
-.coin_icon {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  transition: transform 0.3s;
-}
-.coin_icon:hover {
-  transform: scale(1.2);
-}
-.selected_coin_part {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-.selected_coin_part img {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-}
-
-/* Basit graf alanı */
-.graph_part {
-  margin-top: 1rem;
-  width: 90%;
-  max-width: 800px;
-  height: 300px;
-  border: 1px solid #aaa;
-  position: relative;
-  overflow: hidden;
-}
-.candle {
-  position: absolute;
-  width: 5px;
-  background-color: green;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.candle.red {
-  background-color: red;
-}
-.candle:hover {
-  transform: scale(1.2);
-  z-index: 9;
-}
-.last_close_line {
-  position: absolute;
-  width: 100%;
-  border-top: 1px dashed gray;
-}
-/* Tooltip */
-.candle_tooltip {
-  position: absolute;
-  display: none;
-  background: rgba(0,0,0,0.8);
-  color: white;
-  padding: 6px 10px;
-  border-radius: 5px;
-  font-size: 14px;
-  pointer-events: none;
-  z-index: 999;
-}
-
-/* Wallet */
-.wallet_part {
-  margin-top: 1rem;
-  font-size: 2rem;
-  font-weight: bold;
-}
-.bottom_part {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  width: 100%;
-  margin-top: 1rem;
-}
-.trading_part, .detailed_wallet_part {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background-color: rgba(255,255,255,0.1);
-  border-radius: 8px;
-  padding: 1rem;
-}
-.trading_part h2 {
-  font-size: 1.6rem;
-  margin-bottom: 0.5rem;
-}
-.buy_sell_buttons {
-  display: flex;
-  border: 1px solid white;
-  width: fit-content;
-  justify-content: center;
-  border-radius: 0.5rem;
-}
-.buy_btn, .sell_btn {
-  padding: 0.8rem 1.2rem;
-  font-size: 1.2rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  color: white;
-  font-weight: 600;
-}
-.buy_btn {
-  background-color: black;
-}
-.buy_btn:hover {
-  background-color: grey;
-}
-.sell_btn {
-  background-color: white;
-  color: black;
-}
-.sell_btn:hover {
-  background-color: grey;
-}
-.amount_part {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.trade_confirm_btn {
-  margin-top: 1rem;
-  padding: 1rem 1.2rem;
-  font-size: 1.2rem;
-  border: 2px solid #444;
-  border-radius: 1rem;
-  background-color: #555;
-  color: white;
-  cursor: pointer;
-}
-.trade_confirm_btn:hover {
-  background-color: #333;
-  border-color: #666;
-}
-.detailed_wallet_part h2 {
-  font-size: 1.6rem;
-  margin-bottom: 0.5rem;
-}
-.detailed_wallet_part table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.detailed_wallet_part th, .detailed_wallet_part td {
-  padding: 0.4rem;
-  border-bottom: 1px solid #555;
-}
-.detailed_wallet_part tbody tr:hover {
-  background-color: rgba(255,255,255,0.1);
-}
-
-/* Final animasyon (Simulation end) */
-.final_wallet_value {
-  animation: heartbeat 1.2s infinite;
-}
-@keyframes heartbeat {
-  0%   { transform: scale(1); }
-  25%  { transform: scale(1.1); }
-  40%  { transform: scale(1); }
-  60%  { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
+  .amount_part input{
+    padding: 1rem;
+    border-radius: 12px;
+    border: none;
+  }
+  .trade_confirm_btn {
+    margin-top: 1rem;
+    padding: 1rem 1.2rem;
+    font-size: 1.2rem;
+    border: 2px solid #444;
+    border-radius: 1rem;
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+  }
+  .trade_confirm_btn:hover {
+    background-color: #333;
+    border-color: #666;
+  }
+  .detailed_wallet_part h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .detailed_wallet_part table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .detailed_wallet_part th, .detailed_wallet_part td {
+    padding: 0.4rem;
+    border-bottom: 1px solid #555;
+  }
+  .detailed_wallet_part tbody tr:hover {
+    background-color: rgba(255,255,255,0.1);
+  }
+  
+  /* Final animasyon (Simulation end) */
+  .final_wallet_value {
+    animation: heartbeat 1.2s infinite;
+  }
+  @keyframes heartbeat {
+    0%   { transform: scale(1); }
+    25%  { transform: scale(1.1); }
+    40%  { transform: scale(1); }
+    60%  { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  /* İnce çizgi (wick) */
+.wick {
+    position: absolute;
+    width: 1px;               /* Çok ince çizgi */
+    background-color: #999;   /* Varsayılan gri */
+  }
+  
+  /* Mumun dolu gövdesi */
+  .candle_body {
+    position: absolute;
+    width: 5px;    /* JavaScript’te de ayarlanıyor, eşleşmesi iyi olur */
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  /* Mumun yukarı/yeşil hali */
+  .candle_body.green {
+    background-color: green;
+  }
+  
+  /* Mumun aşağı/kırmızı hali */
+  .candle_body.red {
+    background-color: red;
+  }
+  
+  /* Hover edince biraz büyüsün */
+  .candle_body:hover, .wick:hover {
+    transform: scale(1.2);
+    z-index: 9;
+  }
+  
+  /* Son kapanış çizgisi */
+  .last_close_line {
+    position: absolute;
+    width: 100%;
+    border-top: 1px dashed gray;
+  }
+  
+  /* Fiyat etiketi (sağda) */
+  .last_close_label {
+    position: absolute;
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 3px 6px;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+  

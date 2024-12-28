@@ -27,7 +27,6 @@ $(function () {
      * 3) Team Members Page
      ****************************************************/
     function renderTeamMembersPage() {
-      // container'ı tamamen yeni HTML ile dolduruyoruz
       let out = `
         <div class="navbar">
           <div class="logo_container">
@@ -58,7 +57,6 @@ $(function () {
      * 4) Profiles Page (kullanıcı yönetimi)
      ****************************************************/
     function renderProfilesPage() {
-      // Profil sayfasının HTML'ini yaz
       let out = `
         <div class="navbar">
           <div class="logo_container">
@@ -66,13 +64,13 @@ $(function () {
             <span class="logo-name">Crypto Trading Information System</span>
           </div>
         </div>
-  
+    
         <section class="users"></section>
-  
+    
         <button type="button" class="btn new_profile">
           <span>+</span> New Profile
         </button>
-  
+    
         <div class="new_profile_container" style="display:none;">
           <input type="text" id="new_user_input" placeholder="Enter new profile name">
           <button type="button" class="btn add">
@@ -80,7 +78,6 @@ $(function () {
           </button>
         </div>
       `;
-  
       $(".container").html(out);
   
       // Mevcut kullanıcıları ekranda göster
@@ -137,9 +134,8 @@ $(function () {
   
     // Kullanıcı silme (X ikonu)
     $(".container").on("click", ".close_img", function (e) {
-      e.stopPropagation(); 
+      e.stopPropagation();
       let userName = $(this).closest(".user_container").data("name");
-      // Sil
       states.users = states.users.filter(u => u.name !== userName);
       if (states.active === userName) {
         states.active = null;
@@ -172,11 +168,11 @@ $(function () {
             </div>
           </div>
         </div>
-  
+    
         <div class="trade_page">
           <h1>DAY ${user.day}</h1>
           <h3>${formatDayDate(user.day)}</h3>
-  
+    
           <div class="buttons">
             <button type="button" class="play_btn next_day_btn">
               <img src="icons/arrow-right-svgrepo-com.svg" alt="Next icon">
@@ -187,7 +183,7 @@ $(function () {
               <div>Play</div>
             </button>
           </div>
-  
+    
           <div class="main_part">
             <!-- Coin icons -->
             <div class="coins_part">
@@ -197,24 +193,24 @@ $(function () {
                      class="coin_icon ${c.code === user.selectedCoin ? "selected_coin_anim":""}">
               `).join("")}
             </div>
-  
+    
             <!-- Seçili coin gösterimi -->
             <div class="selected_coin_part">
               <img src="${coins.find(cc => cc.code === user.selectedCoin).image}" alt="coin">
               <div>${coins.find(cc => cc.code === user.selectedCoin).name}</div>
             </div>
-  
+    
             <!-- Grafik alanı -->
             <div class="graph_part">
               <div class="candle_tooltip"></div>
             </div>
           </div>
-  
+    
           <!-- Bakiye -->
           <div class="wallet_part">
             $${user.wallet.cash.toFixed(2)}
           </div>
-  
+    
           <!-- Alt kısım: Trading ve Detailed Wallet -->
           <div class="bottom_part">
             <div class="trading_part">
@@ -229,7 +225,7 @@ $(function () {
               </div>
               <button type="button" class="trade_confirm_btn">CONFIRM</button>
             </div>
-  
+    
             <div class="detailed_wallet_part">
               <h2>Wallet</h2>
               <table>
@@ -252,10 +248,9 @@ $(function () {
           </div>
         </div>
       `;
-  
       $(".container").html(out);
   
-      // Render sonrası ek fonksiyonları çağır
+      // Grafiği çiz, tabloyu doldur
       drawChart();
       fillWalletTable();
     }
@@ -322,120 +317,168 @@ $(function () {
     }
   
     /****************************************************
-     * Play / Pause (Toggle Mantığı)
+     * 10) Play / Pause (Toggle Mantığı)
      ****************************************************/
     let playInterval = null;
-
-    // .play_sim_btn butonu tıklanınca
     $(".container").on("click", ".play_sim_btn", function () {
-        // Butonun o anki durumunu al
-        let isPlaying = $(this).data("playing") === true;
-      
-        if (isPlaying) {
-          // Durma işi
-          clearInterval(playInterval);
-          playInterval = null;
-          $(this).find("img").attr("src", "icons/play-svgrepo-com.svg");
-          $(this).find("div").text("Play");
-          $(this).data("playing", false);    
-        } else {
-          // Başlama işi
-          $(this).find("img").attr("src", "icons/pause-button.svg");
-          $(this).find("div").text("Pause");
-          $(this).data("playing", true);
-      
-          playInterval = setInterval(() => {
-            let user = states.users.find(u => u.name === states.active);
-            if (!user) return;
-      
-            if (user.day >= 365) {
-              clearInterval(playInterval);
-              playInterval = null;
-              // Butonu tekrar “Play”e döndür
-              $(this).data("playing", false);
-              $(this).find("img").attr("src", "icons/play-svgrepo-com.svg");
-              $(this).find("div").text("Play");
-      
-              endSimulation();
-            } else {
-              goNextDay();
-            }
-          }, 100);
-        }
-      });
-      
-
-
+      // O anki durum
+      let isPlaying = $(this).data("playing") === true;
+  
+      if (isPlaying) {
+        // Durdur
+        clearInterval(playInterval);
+        playInterval = null;
+        $(this).find("img").attr("src", "icons/play-svgrepo-com.svg");
+        $(this).find("div").text("Play");
+        $(this).data("playing", false);
+      } else {
+        // Başlat
+        $(this).find("img").attr("src", "icons/pause-button.svg");
+        $(this).find("div").text("Pause");
+        $(this).data("playing", true);
+  
+        playInterval = setInterval(() => {
+          let user = states.users.find(u => u.name === states.active);
+          if (!user) return;
+  
+          if (user.day >= 365) {
+            clearInterval(playInterval);
+            playInterval = null;
+            // Butonu tekrar “Play”e döndür
+            $(this).data("playing", false);
+            $(this).find("img").attr("src", "icons/play-svgrepo-com.svg");
+            $(this).find("div").text("Play");
+  
+            endSimulation();
+          } else {
+            goNextDay();
+          }
+        }, 100);
+      }
+    });
   
     /****************************************************
      * 11) Grafiği oluşturma (Candle)
      ****************************************************/
     function drawChart() {
-      let user = states.users.find(u => u.name === states.active);
-      if (!user) return;
+        let user = states.users.find(u => u.name === states.active);
+        if (!user) return;
       
-      let dayIndex = user.day - 1;
-      if (dayIndex < 0) return;
-  
-      // Son 120 günü al
-      let startIndex = Math.max(0, dayIndex - 119);
-      let relevantDays = market.slice(startIndex, dayIndex + 1);
-  
-      // Seçilen coin’in min-max fiyatlarını bul
-      let priceArray = [];
-      relevantDays.forEach(dayObj => {
-        let cObj = dayObj.coins.find(cc => cc.code === user.selectedCoin);
-        if (cObj) {
-          priceArray.push(cObj.low, cObj.high);
+        // Gün indexi
+        let dayIndex = user.day - 1;
+        if (dayIndex < 0) return;
+      
+        // Son 120 günü al
+        let startIndex = Math.max(0, dayIndex - 119);
+        let relevantDays = market.slice(startIndex, dayIndex + 1);
+      
+        // Seçili coinin min-max fiyatlarını bul
+        let priceArray = [];
+        relevantDays.forEach(dayObj => {
+          let cObj = dayObj.coins.find(cc => cc.code === user.selectedCoin);
+          if (cObj) {
+            priceArray.push(cObj.low, cObj.high);
+          }
+        });
+        if (!priceArray.length) return;
+      
+        let minP = Math.min(...priceArray);
+        let maxP = Math.max(...priceArray);
+      
+        // Grafik konteyneri ve yükseklik
+        let graph = $(".graph_part");
+        let h = graph.height();
+        let graphWidth = graph.width();
+      
+        // Dinamik mum genişliği ve aralık
+        let maxCandles = 120; // Maksimum gösterilecek mum sayısı
+        let candleWidth = Math.max(3, Math.floor((graphWidth - (maxCandles - 1) * 3) / maxCandles)); // 3px minimum gap
+        let gap = 3; // Sabit aralık
+      
+        // Önceki mumları / çizgileri temizle
+        graph.find(".wick").remove();
+        graph.find(".candle_body").remove();
+        graph.find(".last_close_line").remove();
+        graph.find(".last_close_label").remove();
+      
+        // Mum çizimi
+        relevantDays.forEach((dObj, i) => {
+          let coinObj = dObj.coins.find(cc => cc.code === user.selectedCoin);
+          if (!coinObj) return;
+      
+          // X konumu
+          let x = i * (candleWidth + gap);
+      
+          // Y ölçek fonksiyonu
+          let range = maxP - minP;
+          let scaleY = val => h - ((val - minP) / range) * h;
+      
+          let topY = scaleY(coinObj.high); // En yüksek
+          let bottomY = scaleY(coinObj.low); // En düşük
+          let openY = scaleY(coinObj.open);
+          let closeY = scaleY(coinObj.close);
+      
+          // Mumun gövdesi (body)
+          let bodyTop = Math.min(openY, closeY);
+          let bodyHeight = Math.abs(openY - closeY);
+      
+          // Renk
+          let isRed = coinObj.close < coinObj.open;
+          let colorClass = isRed ? "red" : "green";
+      
+          // Wick (ince çizgi, high - low arası)
+          let wickDiv = $(`
+            <div class="wick"
+                 data-day-idx="${startIndex + i}"
+                 style="
+                   left: ${x + candleWidth / 2}px;
+                   top: ${topY}px;
+                   height: ${bottomY - topY}px;
+                 ">
+            </div>
+          `);
+      
+          // Gövde (body), open - close arası
+          let candleBodyDiv = $(`
+            <div class="candle_body ${colorClass}"
+                 data-day-idx="${startIndex + i}"
+                 style="
+                   left: ${x}px;
+                   top: ${bodyTop}px;
+                   width: ${candleWidth}px;
+                   height: ${bodyHeight}px;
+                 ">
+            </div>
+          `);
+      
+          graph.append(wickDiv, candleBodyDiv);
+        });
+      
+        // Son kapanış çizgisi + label
+        let lastCoinObj = relevantDays[relevantDays.length - 1]
+          .coins.find(cc => cc.code === user.selectedCoin);
+      
+        if (lastCoinObj) {
+          let scaleY = val => h - ((val - minP) / (maxP - minP)) * h;
+          let closeY = scaleY(lastCoinObj.close);
+      
+          // Dashed line
+          graph.append(`
+            <div class="last_close_line" style="top:${closeY}px;"></div>
+          `);
+      
+          // Sağ tarafa fiyat etiketi
+          let labelLeft = graphWidth - 60; // keyfi küçük offset
+          graph.append(`
+            <div class="last_close_label"
+                 style="top:${closeY - 10}px; left:${labelLeft}px;">
+              $${lastCoinObj.close.toFixed(2)}
+            </div>
+          `);
         }
-      });
-      if (!priceArray.length) return;
-  
-      let minP = Math.min(...priceArray);
-      let maxP = Math.max(...priceArray);
-  
-      let graph = $(".graph_part");
-      let h = graph.height();
-  
-      // Önceki candle'ları temizle
-      graph.find(".candle").remove();
-      graph.find(".last_close_line").remove();
-  
-      // Candle çiz
-      let candleWidth = 5;
-      let gap = 3;
-      relevantDays.forEach((dObj, i) => {
-        let coinObj = dObj.coins.find(cc => cc.code === user.selectedCoin);
-        if (!coinObj) return;
-  
-        let x = i * (candleWidth + gap) + 10;
-        let range = maxP - minP;
-        let scaleY = (val) => h - ((val - minP) / range) * h;
-  
-        let topY = scaleY(coinObj.high);
-        let bottomY = scaleY(coinObj.low);
-        let redOrNot = (coinObj.close < coinObj.open) ? "red" : "";
-  
-        let candleDiv = $(`
-          <div class="candle ${redOrNot}"
-               data-day-idx="${startIndex + i}"
-               style="left:${x}px; top:${topY}px; height:${bottomY - topY}px;">
-          </div>
-        `);
-        graph.append(candleDiv);
-      });
-  
-      // Last close çizgisi
-      let lastCoinObj = relevantDays[relevantDays.length - 1]
-        .coins.find(cc => cc.code === user.selectedCoin);
-      if (lastCoinObj) {
-        let scaleY = (val) => h - ((val - minP) / (maxP - minP)) * h;
-        let closeY = scaleY(lastCoinObj.close);
-        graph.append(`
-          <div class="last_close_line" style="top:${closeY}px;"></div>
-        `);
       }
-    }
+      
+      
   
     // Candle hover => tooltip
     $(".container").on("mousemove", ".candle", function (e) {
@@ -470,7 +513,7 @@ $(function () {
      * 12) Al-Sat (Trading) İşlemleri
      ****************************************************/
     let currentTradeType = "BUY";
-    
+  
     $(".container").on("click", ".buy_btn", function () {
       currentTradeType = "BUY";
       $(".buy_btn").css("background-color","green");
@@ -478,19 +521,17 @@ $(function () {
       let user = states.users.find(u => u.name === states.active);
       if (!user) return;
       $(".trade_confirm_btn").text(`BUY ${user.selectedCoin}`).css("background-color","green");
-      // Sadece renk vs. değiştiriyorsanız burada yapabilirsiniz
     });
+  
     $(".container").on("click", ".sell_btn", function () {
       currentTradeType = "SELL";
       $(".sell_btn").css("background-color","red");
-        $(".buy_btn").css("background-color","black");
-        let user = states.users.find(u => u.name === states.active);
-        if (!user) return;
-        $(".trade_confirm_btn").text(`SELL ${user.selectedCoin}`).css("background-color","red");
-      // Aynı şekilde SELL için renk ayarları
+      $(".buy_btn").css("background-color","black");
+      let user = states.users.find(u => u.name === states.active);
+      if (!user) return;
+      $(".trade_confirm_btn").text(`SELL ${user.selectedCoin}`).css("background-color","red");
     });
-
-
+  
     // Confirm butonu
     $(".container").on("click", ".trade_confirm_btn", function () {
       let amtStr = $("#amount_input").val().trim();
@@ -512,7 +553,6 @@ $(function () {
       let price = coinObj.close;
   
       if (currentTradeType === "BUY") {
-        
         let cost = amt * price;
         if (cost > user.wallet.cash) {
           alert("Not enough cash!");
@@ -527,7 +567,6 @@ $(function () {
         }
       } else {
         // SELL
-        
         let found = user.wallet.coins.find(c => c.code === user.selectedCoin);
         if (!found || found.amount < amt) {
           alert("Not enough coins to sell!");
@@ -602,6 +641,5 @@ $(function () {
       let monIndex = parseInt(mm, 10) - 1;
       return `${dd} ${monthNames[monIndex]} ${yyyy}`;
     }
-  
   }); // document.ready
   
