@@ -37,10 +37,10 @@ $(function () {
         <section class="team_members">
           <h1>Team Members</h1>
           <ul>
-            <li>Student 1: Name Surname</li>
-            <li>Student 2: Name Surname</li>
-            <li>Student 3: Name Surname</li>
-            <li>Student 4: Name Surname</li>
+            <li>Student 1: Zeynep Günal 22202672</li>
+            <li>Student 2: Ahmet Mert Çaralan 22103122</li>
+            <li>Student 3: Yusif Mammadli 22301537</li>
+            <li>Student 4: Mikhail Mushkarenko 22301406</li>
           </ul>
           <button class="btn go_to_profiles">Go to Profiles</button>
         </section>
