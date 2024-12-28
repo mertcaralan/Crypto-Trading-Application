@@ -82,15 +82,22 @@ $(function () {
   
       // Mevcut kullanıcıları ekranda göster
       let $usersSection = $(".users");
-      states.users.forEach((user) => {
+      if(states.users.length !== 0){
+        states.users.forEach((user) => {
+          $usersSection.append(`
+            <div class="user_container" data-name="${user.name}">
+              <img src="icons/close-ellipse-svgrepo-com.svg" class="close_img" alt="Close icon">
+              <img src="icons/user-icon-svgrepo-com.svg" alt="User icon">
+              <div class="username-box">${user.name}</div>
+            </div>
+          `);
+        });
+      }else{
         $usersSection.append(`
-          <div class="user_container" data-name="${user.name}">
-            <img src="icons/close-ellipse-svgrepo-com.svg" class="close_img" alt="Close icon">
-            <img src="icons/user-icon-svgrepo-com.svg" alt="User icon">
-            <div class="username-box">${user.name}</div>
-          </div>
+          <div class="empty_text">EMPTY</div>
         `);
-      });
+      }
+      
     }
   
     // "+ New Profile" butonuna tıklanınca popup'ı aç

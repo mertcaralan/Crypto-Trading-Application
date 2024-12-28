@@ -386,6 +386,9 @@
     gap: 0.5rem;
   }
 
+  .empty_text{
+    padding-top: 200px;
+  }
   .amount_part input{
     padding: 1rem;
     border-radius: 12px;
