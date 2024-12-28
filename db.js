@@ -367,13 +367,13 @@ let market = [
 ] ;
 
 let coins = [
-      {code : "ada" ,  name : "Cordana" , image : "ada.png"},
-      {code : "avax" ,  name : "Avalanche" , image : "avax.png"},
-      {code : "btc" ,  name : "Bitcoin" , image : "btc.png"},
-      {code : "doge" ,  name : "Dogecoin" , image : "doge.png"},
-      {code : "eth" ,  name : "Ethereum" , image : "eth.png"},
-      {code : "pol" ,  name : "Polygon" , image : "pol.png"},
-      {code : "snx" ,  name : "Synthetix" , image : "snx.png"},
-      {code : "trx" ,  name : "Tron" , image : "trx.png"},
-      {code : "xrp" ,  name : "Ripple" , image : "xrp.png"},
+      {code : "ada" ,  name : "Cordana" , image : "images/ada.png"},
+      {code : "avax" ,  name : "Avalanche" , image : "images/avax.png"},
+      {code : "btc" ,  name : "Bitcoin" , image : "images/btc.png"},
+      {code : "doge" ,  name : "Dogecoin" , image : "images/doge.png"},
+      {code : "eth" ,  name : "Ethereum" , image : "images/eth.png"},
+      {code : "pol" ,  name : "Polygon" , image : "images/pol.png"},
+      {code : "snx" ,  name : "Synthetix" , image : "images/snx.png"},
+      {code : "trx" ,  name : "Tron" , image : "images/trx.png"},
+      {code : "xrp" ,  name : "Ripple" , image : "images/xrp.png"},
 ] ;
