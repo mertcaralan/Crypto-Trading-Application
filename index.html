@@ -6,26 +6,22 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CTIS - Crypto Trading Information System</title>
 
-  <!-- Google Fonts -->
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap"
     rel="stylesheet">
-    
-  <!-- Font Awesome (opsiyonel, iconlar svg ile zaten kullanılıyor) -->
+
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     rel="stylesheet">
 
-  <!-- Favicon (opsiyonel) -->
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
 
-  <!-- Stil dosyası -->
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <div class="container">
-    <!-- Navbar (dinamik olarak script.js’de değişebilir) -->
+    
     <div class="navbar">
       <div class="logo_container">
         <span class="logo">CTIS</span>
@@ -33,27 +29,21 @@
       </div>
     </div>
 
-    <!-- Team Members sayfası (ilk gözüken kısım) -->
     <section class="team_members">
       <h1>Team Members</h1>
       <ul>
-        <li>Zeynep Günal 22202672</li>
-        <li>Ahmet Mert Çaralan 22103122</li>
-        <li>Yusif Mammadli 22301537</li>
-        <li>Mikhail Mushkarenko 22301406</li>
+        <li>Zeynep Günal</li>
+        <li>Mert Çaralan</li>
       </ul>
       <button class="btn go_to_profiles">Go to Profiles</button>
     </section>
 
-    <!-- Profiles (users) alanı. JS ile doldurulacak. -->
     <section class="users"></section>
 
-    <!-- Yeni profil butonu (Profiles ekranı için). Varsayılan olarak gizli. -->
     <button type="button" class="btn new_profile" style="display: none;">
       <span>+</span> New Profile
     </button>
 
-    <!-- Yeni profil ekleme popup'ı. Varsayılan olarak gizli. -->
     <div class="new_profile_container" style="display: none;">
       <input
         type="text"
@@ -64,15 +54,9 @@
       </button>
     </div>
 
-  </div> <!-- container sonu -->
-
-  <!-- jQuery -->
+  </div>
   <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
-  
-  <!-- db.js: "market" ve "coins" verilerinin olduğu dosya -->
   <script src="db.js"></script>
-  
-  <!-- Ana script dosyanız -->
   <script src="script.js"></script>
 </body>
 </html>
