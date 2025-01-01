@@ -1,7 +1,7 @@
-# CTIS - Crypto Trading Information System
+# Crypto Trading Application
 
 ## 💡 Project Overview
-CTIS (Crypto Trading Information System) is an interactive web-based platform designed to simulate cryptocurrency trading. It provides users with:
+**Crypto Trading Application** is an interactive web-based platform designed to simulate cryptocurrency trading. It provides users with:
 
 - **User Profile Management**: Create and manage profiles for simulated trading sessions.
 - **Crypto Trading Simulation**: Conduct trades using virtual funds, explore market trends, and visualize data through interactive candlestick charts.
