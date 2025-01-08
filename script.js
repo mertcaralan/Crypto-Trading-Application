@@ -1,595 +1,652 @@
 $(function () {
     /****************************************************
-   * 1) Global states + localStorage
-   ****************************************************/
-  const states = JSON.parse(localStorage.getItem("states")) || {
-    active: null,   // Current active username
-    users: [],      // List of all users
-  };
-
-  const saveStates = () => {
-    localStorage.setItem("states", JSON.stringify(states));
-  };
-
-  /****************************************************
-   * 2) Initial Load: Team Members or Trade Page?
-   ****************************************************/
-  states.active ? renderTradePage() : renderTeamMembersPage();
-
-  /****************************************************
-   * 3) Team Members Page
-   ****************************************************/
-  function renderTeamMembersPage() {
-    const content = `
-      <div class="navbar">
-        <div class="logo_container">
-          <span class="logo">CTIS</span>
-          <span class="logo-name">Crypto Trading Information System</span>
-        </div>
-      </div>
-      <section class="team_members">
-        <h1>Team Members</h1>
-        <ul>
-          <li>Zeynep Günal</li>
-          <li>Mert Çaralan</li>
-        </ul>
-        <button class="btn go_to_profiles">Go to Profiles</button>
-      </section>
-    `;
-    $(".container").html(content);
-  }
-
-  $(".container").on("click", ".go_to_profiles", renderProfilesPage);
-
-  /****************************************************
-   * 4) Profiles Page (User Management)
-   ****************************************************/
-  function renderProfilesPage() {
-    const content = `
-      <div class="navbar">
-        <div class="logo_container">
-          <span class="logo">CTIS</span>
-          <span class="logo-name">Crypto Trading Information System</span>
-        </div>
-      </div>
-      <section class="users">
-        ${states.users.length ? renderUserList(states.users) : '<div class="empty_text">EMPTY</div>'}
-      </section>
-      <button type="button" class="btn new_profile">
-        <span>+</span> New Profile
-      </button>
-      <div class="new_profile_container" style="display:none;">
-        <input type="text" id="new_user_input" placeholder="Enter new profile name">
-        <button type="button" class="btn add">
-          <i class="fas fa-plus"></i> Add
-        </button>
-      </div>
-    `;
-    $(".container").html(content);
-  }
-
-  function renderUserList(users) {
-    return users
-      .map(
-        (user) => `
-        <div class="user_container" data-name="${user.name}">
-          <img src="icons/close-ellipse-svgrepo-com.svg" class="close_img" alt="Close icon">
-          <img src="icons/user-icon-svgrepo-com.svg" alt="User icon">
-          <div class="username-box">${user.name}</div>
-        </div>`
-      )
-      .join("");
-  }
-
-  $(".container").on("click", ".new_profile", function () {
-    $(".new_profile_container").show();
-    $("#new_user_input").val("").focus();
-  });
-
-  $(".container").on("click", ".btn.add", function () {
-    const newName = $("#new_user_input").val().trim();
-    if (!newName) {
-      alert("Please enter a profile name");
-      return;
+     * 1) Global states + localStorage
+     ****************************************************/
+    let states = JSON.parse(localStorage.getItem("states")) || {
+      active: null,   // Şu anki aktif kullanıcı adı
+      users: [],      // Tüm kullanıcılar listesi
+    };
+  
+    // States güncellenince localStorage'a kaydeden yardımcı fonksiyon
+    function saveStates() {
+      localStorage.setItem("states", JSON.stringify(states));
     }
-
-    states.users.push({
-      name: newName,
-      day: 2,
-      selectedCoin: "btc",
-      wallet: {
-        cash: 1000,
-        coins: [],
-      },
-    });
-    saveStates();
-    renderProfilesPage();
-  });
-    
-      // Profil kutusuna tıklayınca => aktif kullanıcı seç
-  $(".container").on("click", ".user_container", function (e) {
-    if ($(e.target).hasClass("close_img")) return; // Eğer X butonuna basıldıysa (kullanıcı silme) => durdur
-    const username = $(this).data("name");
-    states.active = username;
-    saveStates();
-    renderTradePage();
-  });
-
-  // Kullanıcı silme (X ikonu)
-  $(".container").on("click", ".close_img", function (e) {
-    e.stopPropagation();
-    const userName = $(this).closest(".user_container").data("name");
-    states.users = states.users.filter(user => user.name !== userName);
-
-    if (states.active === userName) {
-        states.active = null;
-    }
-    saveStates();
-    renderProfilesPage();
-  });
-
-  /****************************************************
-  * Trade Page (asıl al-sat ve grafik ekranı)
-  ****************************************************/
-  function renderTradePage() {
-    const user = states.users.find(user => user.name === states.active);
-    if (!user) return;
-
-    const out = `
-        <div class="navbar">
-            <div class="logo_container">
-                <span class="logo">CTIS</span>
-                <span class="logo-name">Crypto Trading Information System</span>
-            </div>
-            <div class="right_nav">
-                <div class="nav_user_container">
-                    <img src="icons/user-icon-svgrepo-com.svg" alt="User icon">
-                    <div class="username-box">${user.name}</div>
-                </div>
-                <div class="nav_user_container" id="logout_button">
-                    <img src="icons/logout-svgrepo-com.svg" alt="Logout icon">
-                    <div class="username-box">Logout</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="trade_page">
-            <h1>DAY ${user.day}</h1>
-            <h3>${formatDayDate(user.day)}</h3>
-
-            <div class="buttons">
-                <button type="button" class="play_btn next_day_btn">
-                    <img src="icons/arrow-right-svgrepo-com.svg" alt="Next icon">
-                    <div>Next Day</div>
-                </button>
-                <button type="button" class="play_btn play_sim_btn" data-playing="false">
-                    <img src="icons/play-svgrepo-com.svg" alt="Play icon">
-                    <div>Play</div>
-                </button>
-            </div>
-
-            <div class="main_part">
-                <div class="coins_part">
-                    ${coins.map(coin => `
-                        <img src="${coin.image}" data-code="${coin.code}"
-                            title="${coin.name}"
-                            class="coin_icon ${coin.code === user.selectedCoin ? "coin_heartbeat" : ""}">
-                    `).join("")}
-                </div>
-
-                <div class="selected_coin_part">
-                    <img src="${coins.find(c => c.code === user.selectedCoin).image}" alt="coin">
-                    <div>${coins.find(c => c.code === user.selectedCoin).name}</div>
-                </div>
-
-                <div class="graph_part">
-                    <div class="candle_tooltip"></div>
-                </div>
-            </div>
-
-            <div class="wallet_part">
-                $${user.wallet.cash.toFixed(2)}
-            </div>
-
-            <div class="bottom_part">
-                <div class="trading_part">
-                    <h2>Trading</h2>
-                    <div class="buy_sell_buttons">
-                        <button type="button" class="buy_btn">BUY</button>
-                        <button type="button" class="sell_btn">SELL</button>
-                    </div>
-                    <div class="amount_part">
-                        <input type="text" id="amount_input" placeholder="Amount">
-                        <label>= $</label>
-                    </div>
-                    <button type="button" class="trade_confirm_btn">CONFIRM</button>
-                </div>
-
-                <div class="detailed_wallet_part">
-                    <h2>Wallet</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Coin</th>
-                                <th>Amount</th>
-                                <th>Subtotal</th>
-                                <th>Last Close</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Dollar</td>
-                                <td colspan="3">$${user.wallet.cash.toFixed(2)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    `;
-
-    $(".container").html(out);
-    drawChart();
-    fillWalletTable();
-  }
-
-  /****************************************************
-  * Logout Butonu
-  ****************************************************/
-  $(".container").on("click", "#logout_button", function () {
-    states.active = null;
-    saveStates();
-    renderProfilesPage();
-  });
-
-  /****************************************************
-  * Coin seçimi
-  ****************************************************/
-  $(".container").on("click", ".coin_icon", function () {
-    const code = $(this).data("code");
-    const user = states.users.find(user => user.name === states.active);
-    if (!user) return;
-
-    user.selectedCoin = code;
-    saveStates();
-    renderTradePage();
-  });
-
-  /****************************************************
-  * Next Day Butonu
-  ****************************************************/
-  $(".container").on("click", ".next_day_btn", function () {
-    goNextDay();
-  });
-
-  function goNextDay() {
-    const user = states.users.find(user => user.name === states.active);
-    if (!user || user.day >= 365) return;
-
-    user.day++;
-    saveStates();
-
-    if (user.day === 366) {
-        endSimulation();
+  
+    /****************************************************
+     * 2) İlk açılış: Team Members mı, yoksa Trade Page mi?
+     ****************************************************/
+    if (!states.active) {
+      // Hiç aktif kullanıcı yoksa => Team Members sayfası
+      renderTeamMembersPage();
     } else {
-        renderTradePage();
+      // Bir aktif kullanıcı varsa => direkt Trade Page
+      renderTradePage();
     }
-  }
-
-  /****************************************************
-  * Simülasyon Bitişi
-  ****************************************************/
-  function endSimulation() {
-    const user = states.users.find(user => user.name === states.active);
-    if (!user) return;
-
-    renderTradePage();
-    $(".trading_part, .next_day_btn, .play_sim_btn").remove();
-    $(".wallet_part").addClass("final_wallet_value");
-  }
-
+  
+    /****************************************************
+     * 3) Team Members Page
+     ****************************************************/
+    function renderTeamMembersPage() {
+      let out = `
+        <div class="navbar">
+          <div class="logo_container">
+            <span class="logo">CTIS</span>
+            <span class="logo-name">Crypto Trading Information System</span>
+          </div>
+        </div>
+        <section class="team_members">
+          <h1>Team Members</h1>
+          <ul>
+            <li>Student 1: Zeynep Günal 22202672</li>
+            <li>Student 2: Ahmet Mert Çaralan 22103122</li>
+            <li>Student 3: Yusif Mammadli 22301537</li>
+            <li>Student 4: Mikhail Mushkarenko 22301406</li>
+          </ul>
+          <button class="btn go_to_profiles">Go to Profiles</button>
+        </section>
+      `;
+      $(".container").html(out);
+    }
+  
+    // "Go to Profiles" butonuna basılınca
+    $(".container").on("click", ".go_to_profiles", function () {
+      renderProfilesPage();
+    });
+  
+    /****************************************************
+     * 4) Profiles Page (kullanıcı yönetimi)
+     ****************************************************/
+    function renderProfilesPage() {
+      let out = `
+        <div class="navbar">
+          <div class="logo_container">
+            <span class="logo">CTIS</span>
+            <span class="logo-name">Crypto Trading Information System</span>
+          </div>
+        </div>
     
-      /****************************************************
-   * Play / Pause (Toggle Mantığı)
-   ****************************************************/
-  let playInterval = null;
-  $(".container").on("click", ".play_sim_btn", function () {
-      // O anki durum
-      let isPlaying = $(this).data("playing") === true;
-
-      if (isPlaying) {
-          // Durdur
-          clearInterval(playInterval);
-          playInterval = null;
-          $(this).find("img").attr("src", "icons/play-svgrepo-com.svg");
-          $(this).find("div").text("Play");
-          $(this).data("playing", false);
-      } else {
-          // Başlat
-          $(this).find("img").attr("src", "icons/pause-button.svg");
-          $(this).find("div").text("Pause");
-          $(this).data("playing", true);
-
-          playInterval = setInterval(() => {
-              let user = states.users.find(u => u.name === states.active);
-              if (!user) return;
-
-              if (user.day >= 365) {
-                  clearInterval(playInterval);
-                  playInterval = null;
-                  $(this).data("playing", false);
-                  $(this).find("img").attr("src", "icons/play-svgrepo-com.svg");
-                  $(this).find("div").text("Play");
-
-                  endSimulation();
-              } else {
-                  goNextDay();
-              }
-          }, 100);
+        <section class="users"></section>
+    
+        <button type="button" class="btn new_profile">
+          <span>+</span> New Profile
+        </button>
+    
+        <div class="new_profile_container" style="display:none;">
+          <input type="text" id="new_user_input" placeholder="Enter new profile name">
+          <button type="button" class="btn add">
+            <i class="fas fa-plus"></i> Add
+          </button>
+        </div>
+      `;
+      $(".container").html(out);
+  
+      // Mevcut kullanıcıları ekranda göster
+      let $usersSection = $(".users");
+      if(states.users.length !== 0){
+        states.users.forEach((user) => {
+          $usersSection.append(`
+            <div class="user_container" data-name="${user.name}">
+              <img src="icons/close-ellipse-svgrepo-com.svg" class="close_img" alt="Close icon">
+              <img src="icons/user-icon-svgrepo-com.svg" alt="User icon">
+              <div class="username-box">${user.name}</div>
+            </div>
+          `);
+        });
+      }else{
+        $usersSection.append(`
+          <div class="empty_text">EMPTY</div>
+        `);
       }
-  });
-
-  /****************************************************
-   * Grafiği Oluşturma (Candle)
-   ****************************************************/
-  function drawChart() {
+      
+    }
+  
+    // "+ New Profile" butonuna tıklanınca popup'ı aç
+    $(".container").on("click", ".new_profile", function () {
+      $(".new_profile_container").show();
+      $("#new_user_input").val("").focus();
+    });
+  
+    // Yeni profil ekleme
+    $(".container").on("click", ".btn.add", function () {
+      let newName = $("#new_user_input").val().trim();
+      if (!newName) {
+        alert("Please enter a profile name");
+        return;
+      }
+      // Kullanıcı ekle
+      states.users.push({
+        name: newName,
+        day: 2,
+        selectedCoin: "btc",
+        wallet: {
+          cash: 1000,
+          coins: []
+        }
+      });
+      saveStates();
+  
+      // Tekrar render
+      renderProfilesPage();
+    });
+  
+    // Profil kutusuna tıklayınca => aktif kullanıcı seç
+    $(".container").on("click", ".user_container", function (e) {
+      // Eğer X butonuna basıldıysa (kullanıcı silme) => durdur
+      if ($(e.target).hasClass("close_img")) return;
+      let username = $(this).data("name");
+      states.active = username;
+      saveStates();
+      renderTradePage();
+    });
+  
+    // Kullanıcı silme (X ikonu)
+    $(".container").on("click", ".close_img", function (e) {
+      e.stopPropagation();
+      let userName = $(this).closest(".user_container").data("name");
+      states.users = states.users.filter(u => u.name !== userName);
+      if (states.active === userName) {
+        states.active = null;
+      }
+      saveStates();
+      renderProfilesPage();
+    });
+  
+    /****************************************************
+     * 5) Trade Page (asıl al-sat ve grafik ekranı)
+     ****************************************************/
+    function renderTradePage() {
       let user = states.users.find(u => u.name === states.active);
       if (!user) return;
-
-      let dayIndex = user.day - 1;
-      if (dayIndex < 0) return;
-
-      let startIndex = Math.max(0, dayIndex - 119);
-      let relevantDays = market.slice(startIndex, dayIndex + 1);
-
-      let priceArray = [];
-      relevantDays.forEach(dayObj => {
+  
+      let out = `
+        <div class="navbar">
+          <div class="logo_container">
+            <span class="logo">CTIS</span>
+            <span class="logo-name">Crypto Trading Information System</span>
+          </div>
+          <div class="right_nav">
+            <div class="nav_user_container">
+              <img src="icons/user-icon-svgrepo-com.svg" alt="User icon">
+              <div class="username-box">${user.name}</div>
+            </div>
+            <div class="nav_user_container" id="logout_button">
+              <img src="icons/logout-svgrepo-com.svg" alt="Logout icon">
+              <div class="username-box">Logout</div>
+            </div>
+          </div>
+        </div>
+    
+        <div class="trade_page">
+          <h1>DAY ${user.day}</h1>
+          <h3>${formatDayDate(user.day)}</h3>
+    
+          <div class="buttons">
+            <button type="button" class="play_btn next_day_btn">
+              <img src="icons/arrow-right-svgrepo-com.svg" alt="Next icon">
+              <div>Next Day</div>
+            </button>
+            <button type="button" class="play_btn play_sim_btn" data-playing="false">
+              <img src="icons/play-svgrepo-com.svg" alt="Play icon">
+              <div>Play</div>
+            </button>
+          </div>
+    
+          <div class="main_part">
+            <!-- Coin icons -->
+            <div class="coins_part">
+              ${coins.map(c => `
+                <img src="${c.image}" data-code="${c.code}"
+                     title="${c.name}"
+                     class="coin_icon ${c.code === user.selectedCoin ? "coin_heartbeat":""}">
+              `).join("")}
+            </div>
+    
+            <!-- Seçili coin gösterimi -->
+            <div class="selected_coin_part">
+              <img src="${coins.find(cc => cc.code === user.selectedCoin).image}" alt="coin">
+              <div>${coins.find(cc => cc.code === user.selectedCoin).name}</div>
+            </div>
+    
+            <!-- Grafik alanı -->
+            <div class="graph_part">
+              <div class="candle_tooltip"></div>
+            </div>
+          </div>
+    
+          <!-- Bakiye -->
+          <div class="wallet_part">
+            $${user.wallet.cash.toFixed(2)}
+          </div>
+    
+          <!-- Alt kısım: Trading ve Detailed Wallet -->
+          <div class="bottom_part">
+            <div class="trading_part">
+              <h2>Trading</h2>
+              <div class="buy_sell_buttons">
+                <button type="button" class="buy_btn">BUY</button>
+                <button type="button" class="sell_btn">SELL</button>
+              </div>
+              <div class="amount_part">
+                <input type="text" id="amount_input" placeholder="Amount">
+                <label>= $</label>
+              </div>
+              <button type="button" class="trade_confirm_btn">CONFIRM</button>
+            </div>
+    
+            <div class="detailed_wallet_part">
+              <h2>Wallet</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Coin</th>
+                    <th>Amount</th>
+                    <th>Subtotal</th>
+                    <th>Last Close</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Dollar</td>
+                    <td colspan="3">$${user.wallet.cash.toFixed(2)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+      $(".container").html(out);
+  
+      // Grafiği çiz, tabloyu doldur
+      drawChart();
+      fillWalletTable();
+    }
+  
+    /****************************************************
+     * 6) Logout Butonu
+     ****************************************************/
+    $(".container").on("click", "#logout_button", function () {
+      states.active = null;
+      saveStates();
+      renderProfilesPage();  // Profil sayfasına geri dön
+    });
+  
+    /****************************************************
+     * 7) Coin seçimi
+     ****************************************************/
+    $(".container").on("click", ".coin_icon", function () {
+      let code = $(this).data("code");
+      let user = states.users.find(u => u.name === states.active);
+      if (!user) return;
+      user.selectedCoin = code;
+      saveStates();
+      renderTradePage();
+    });
+  
+    /****************************************************
+     * 8) Next Day Butonu
+     ****************************************************/
+    $(".container").on("click", ".next_day_btn", function () {
+      goNextDay();
+    });
+  
+    function goNextDay() {
+      let user = states.users.find(u => u.name === states.active);
+      if (!user) return;
+      if (user.day >= 365) return;   // max 365
+  
+      user.day++;
+      saveStates();
+  
+      if (user.day === 366) {
+        // 365'ten sonraki gün => bitir
+        endSimulation();
+      } else {
+        renderTradePage();
+      }
+    }
+  
+    /****************************************************
+     * 9) Simülasyon Bitişi
+     ****************************************************/
+    function endSimulation() {
+      let user = states.users.find(u => u.name === states.active);
+      if (!user) return;
+      renderTradePage();
+  
+      // Trade arayüzünü kapat
+      $(".trading_part").remove();
+      $(".next_day_btn").remove();
+      $(".play_sim_btn").remove();
+  
+      // Cüzdan değeri animasyonlu
+      $(".wallet_part").addClass("final_wallet_value");
+    }
+  
+    /****************************************************
+     * 10) Play / Pause (Toggle Mantığı)
+     ****************************************************/
+    let playInterval = null;
+    $(".container").on("click", ".play_sim_btn", function () {
+      // O anki durum
+      let isPlaying = $(this).data("playing") === true;
+  
+      if (isPlaying) {
+        // Durdur
+        clearInterval(playInterval);
+        playInterval = null;
+        $(this).find("img").attr("src", "icons/play-svgrepo-com.svg");
+        $(this).find("div").text("Play");
+        $(this).data("playing", false);
+      } else {
+        // Başlat
+        $(this).find("img").attr("src", "icons/pause-button.svg");
+        $(this).find("div").text("Pause");
+        $(this).data("playing", true);
+  
+        playInterval = setInterval(() => {
+          let user = states.users.find(u => u.name === states.active);
+          if (!user) return;
+  
+          if (user.day >= 365) {
+            clearInterval(playInterval);
+            playInterval = null;
+            // Butonu tekrar “Play”e döndür
+            $(this).data("playing", false);
+            $(this).find("img").attr("src", "icons/play-svgrepo-com.svg");
+            $(this).find("div").text("Play");
+  
+            endSimulation();
+          } else {
+            goNextDay();
+          }
+        }, 100);
+      }
+    });
+  
+    /****************************************************
+     * 11) Grafiği oluşturma (Candle)
+     ****************************************************/
+    function drawChart() {
+        let user = states.users.find(u => u.name === states.active);
+        if (!user) return;
+      
+        // Gün indexi
+        let dayIndex = user.day - 1;
+        if (dayIndex < 0) return;
+      
+        // Son 120 günü al
+        let startIndex = Math.max(0, dayIndex - 119);
+        let relevantDays = market.slice(startIndex, dayIndex + 1);
+      
+        // Seçili coinin min-max fiyatlarını bul
+        let priceArray = [];
+        relevantDays.forEach(dayObj => {
           let cObj = dayObj.coins.find(cc => cc.code === user.selectedCoin);
           if (cObj) {
-              priceArray.push(cObj.low, cObj.high);
+            priceArray.push(cObj.low, cObj.high);
           }
-      });
-      if (!priceArray.length) return;
-
-      let minP = Math.min(...priceArray);
-      let maxP = Math.max(...priceArray);
-
-      let graph = $(".graph_part");
-      let h = graph.height();
-      let graphWidth = graph.width();
-
-      let maxCandles = 120; 
-      let candleWidth = Math.max(3, Math.floor((graphWidth - (maxCandles - 1) * 3) / maxCandles));
-      let gap = 3;
-
-      graph.find(".wick").remove();
-      graph.find(".candle_body").remove();
-      graph.find(".last_close_line").remove();
-      graph.find(".last_close_label").remove();
-
-      relevantDays.forEach((dObj, i) => {
+        });
+        if (!priceArray.length) return;
+      
+        let minP = Math.min(...priceArray);
+        let maxP = Math.max(...priceArray);
+      
+        // Grafik konteyneri ve yükseklik
+        let graph = $(".graph_part");
+        let h = graph.height();
+        let graphWidth = graph.width();
+      
+        // Dinamik mum genişliği ve aralık
+        let maxCandles = 120; // Maksimum gösterilecek mum sayısı
+        let candleWidth = Math.max(3, Math.floor((graphWidth - (maxCandles - 1) * 3) / maxCandles)); // 3px minimum gap
+        let gap = 3; // Sabit aralık
+      
+        // Önceki mumları / çizgileri temizle
+        graph.find(".wick").remove();
+        graph.find(".candle_body").remove();
+        graph.find(".last_close_line").remove();
+        graph.find(".last_close_label").remove();
+      
+        // Mum çizimi
+        relevantDays.forEach((dObj, i) => {
           let coinObj = dObj.coins.find(cc => cc.code === user.selectedCoin);
           if (!coinObj) return;
-
+      
+          // X konumu
           let x = i * (candleWidth + gap);
-
+      
+          // Y ölçek fonksiyonu
           let range = maxP - minP;
           let scaleY = val => h - ((val - minP) / range) * h;
-
-          let topY = scaleY(coinObj.high);
-          let bottomY = scaleY(coinObj.low);
+      
+          let topY = scaleY(coinObj.high); // En yüksek
+          let bottomY = scaleY(coinObj.low); // En düşük
           let openY = scaleY(coinObj.open);
           let closeY = scaleY(coinObj.close);
-
+      
+          // Mumun gövdesi (body)
           let bodyTop = Math.min(openY, closeY);
           let bodyHeight = Math.abs(openY - closeY);
-
+      
+          // Renk
           let isRed = coinObj.close < coinObj.open;
           let colorClass = isRed ? "red" : "green";
-
+      
+          // Wick (ince çizgi, high - low arası)
           let wickDiv = $(`
-              <div class="wick"
-                  style="left: ${x + candleWidth / 2}px; top: ${topY}px; height: ${bottomY - topY}px;">
-              </div>
+            <div class="wick"
+                 data-day-idx="${startIndex + i}"
+                 style="
+                   left: ${x + candleWidth / 2}px;
+                   top: ${topY}px;
+                   height: ${bottomY - topY}px;
+                 ">
+            </div>
           `);
-
+      
+          // Gövde (body), open - close arası
           let candleBodyDiv = $(`
-              <div class="candle_body ${colorClass}"
-                  style="left: ${x}px; top: ${bodyTop}px; width: ${candleWidth}px; height: ${bodyHeight}px;">
-              </div>
+            <div class="candle_body ${colorClass}"
+                 data-day-idx="${startIndex + i}"
+                 style="
+                   left: ${x}px;
+                   top: ${bodyTop}px;
+                   width: ${candleWidth}px;
+                   height: ${bodyHeight}px;
+                 ">
+            </div>
           `);
-
+      
           graph.append(wickDiv, candleBodyDiv);
-      });
-
-      let lastCoinObj = relevantDays[relevantDays.length - 1]
+        });
+      
+        // Son kapanış çizgisi + label
+        let lastCoinObj = relevantDays[relevantDays.length - 1]
           .coins.find(cc => cc.code === user.selectedCoin);
-
-      if (lastCoinObj) {
-          let closeY = h - ((lastCoinObj.close - minP) / (maxP - minP)) * h;
-
+      
+        if (lastCoinObj) {
+          let scaleY = val => h - ((val - minP) / (maxP - minP)) * h;
+          let closeY = scaleY(lastCoinObj.close);
+      
+          // Dashed line
           graph.append(`
-              <div class="last_close_line" style="top:${closeY}px;"></div>
+            <div class="last_close_line" style="top:${closeY}px;"></div>
           `);
-
-          let labelLeft = graphWidth - 60; 
+      
+          // Sağ tarafa fiyat etiketi
+          let labelLeft = graphWidth - 60; // keyfi küçük offset
           graph.append(`
-              <div class="last_close_label"
-                  style="top:${closeY - 10}px; left:${labelLeft}px;">
-                $${lastCoinObj.close.toFixed(2)}
-              </div>
+            <div class="last_close_label"
+                 style="top:${closeY - 10}px; left:${labelLeft}px;">
+              $${lastCoinObj.close.toFixed(2)}
+            </div>
           `);
+        }
       }
-  }     
-      // Candle hover => tooltip
-  $(".container").on("mousemove", ".candle", function (e) {
-    const dayIdx = $(this).data("day-idx");
-    const user = states.users.find(u => u.name === states.active);
-    if (!user) return;
-
-    const dayData = market[dayIdx];
-    const coinData = dayData?.coins.find(cc => cc.code === user.selectedCoin);
-    if (!coinData) return;
-
-    const coinName = coins.find(c => c.code === user.selectedCoin)?.name || user.selectedCoin;
-    const tooltip = $(".candle_tooltip");
-    tooltip.html(`
+      
+      
+  
+    // Candle hover => tooltip
+    $(".container").on("mousemove", ".candle", function (e) {
+      let dayIdx = $(this).data("day-idx");
+      let user = states.users.find(u => u.name === states.active);
+      if (!user) return;
+  
+      let dayData = market[dayIdx];
+      let coinData = dayData?.coins.find(cc => cc.code === user.selectedCoin);
+      if (!coinData) return;
+  
+      let coinName = coins.find(c => c.code === user.selectedCoin)?.name || user.selectedCoin;
+      let tooltip = $(".candle_tooltip");
+      tooltip.html(`
         <b>${coinName}</b><br/>
         O: ${coinData.open}<br/>
         C: ${coinData.close}<br/>
         L: ${coinData.low}<br/>
         H: ${coinData.high}
-    `);
-
-    const offset = $(".graph_part").offset();
-    tooltip.css({ 
-        left: `${e.pageX - offset.left + 10}px`, 
-        top: `${e.pageY - offset.top + 10}px`, 
-        display: "block" 
+      `);
+  
+      let offset = $(".graph_part").offset();
+      let mouseX = e.pageX - offset.left + 10;
+      let mouseY = e.pageY - offset.top + 10;
+      tooltip.css({ left: mouseX + "px", top: mouseY + "px", display: "block" });
     });
-  });
-
-  $(".container").on("mouseleave", ".candle", function () {
-    $(".candle_tooltip").hide();
-  });
-
-  /****************************************************
-  * Trade Actions: Buy and Sell
-  ****************************************************/
-  let currentTradeType = "BUY";
-
-  $(".container").on("click", ".buy_btn", function () {
-    currentTradeType = "BUY";
-    $(this).css("background-color", "green");
-    $(".sell_btn").css("background-color", "white");
-
-    const user = states.users.find(u => u.name === states.active);
-    if (!user) return;
-
-    $(".trade_confirm_btn").text(`BUY ${user.selectedCoin}`).css("background-color", "green");
-  });
-
-  $(".container").on("click", ".sell_btn", function () {
-    currentTradeType = "SELL";
-    $(this).css("background-color", "red");
-    $(".buy_btn").css("background-color", "black");
-
-    const user = states.users.find(u => u.name === states.active);
-    if (!user) return;
-
-    $(".trade_confirm_btn").text(`SELL ${user.selectedCoin}`).css("background-color", "red");
-  });
-
-  $(".container").on("click", ".trade_confirm_btn", function () {
-    const amtStr = $("#amount_input").val().trim();
-    const amt = parseFloat(amtStr);
-    if (isNaN(amt) || amt <= 0) {
+    $(".container").on("mouseleave", ".candle", function () {
+      $(".candle_tooltip").hide();
+    });
+  
+    /****************************************************
+     * 12) Al-Sat (Trading) İşlemleri
+     ****************************************************/
+    let currentTradeType = "BUY";
+  
+    $(".container").on("click", ".buy_btn", function () {
+      currentTradeType = "BUY";
+      $(".buy_btn").css("background-color","green");
+      $(".sell_btn").css("background-color","white");
+      let user = states.users.find(u => u.name === states.active);
+      if (!user) return;
+      $(".trade_confirm_btn").text(`BUY ${user.selectedCoin}`).css("background-color","green");
+    });
+  
+    $(".container").on("click", ".sell_btn", function () {
+      currentTradeType = "SELL";
+      $(".sell_btn").css("background-color","red");
+      $(".buy_btn").css("background-color","black");
+      let user = states.users.find(u => u.name === states.active);
+      if (!user) return;
+      $(".trade_confirm_btn").text(`SELL ${user.selectedCoin}`).css("background-color","red");
+    });
+  
+    // Confirm butonu
+    $(".container").on("click", ".trade_confirm_btn", function () {
+      let amtStr = $("#amount_input").val().trim();
+      let amt = parseFloat(amtStr);
+      if (isNaN(amt) || amt <= 0) {
         alert("Invalid amount");
         return;
-    }
-
-    const user = states.users.find(u => u.name === states.active);
-    if (!user) return;
-
-    const dayData = market[user.day - 1];
-    const coinObj = dayData?.coins.find(cc => cc.code === user.selectedCoin);
-    if (!coinObj) {
+      }
+      let user = states.users.find(u => u.name === states.active);
+      if (!user) return;
+  
+      // Son kapanış fiyatını al
+      let dayData = market[user.day - 1];
+      let coinObj = dayData?.coins.find(cc => cc.code === user.selectedCoin);
+      if (!coinObj) {
         alert("Coin data not found for today");
         return;
-    }
-
-    const price = coinObj.close;
-
-    if (currentTradeType === "BUY") {
-        const cost = amt * price;
+      }
+      let price = coinObj.close;
+  
+      if (currentTradeType === "BUY") {
+        let cost = amt * price;
         if (cost > user.wallet.cash) {
-            alert("Not enough cash!");
-            return;
+          alert("Not enough cash!");
+          return;
         }
         user.wallet.cash -= cost;
-        const found = user.wallet.coins.find(c => c.code === user.selectedCoin);
+        let found = user.wallet.coins.find(c => c.code === user.selectedCoin);
         if (!found) {
-            user.wallet.coins.push({ code: user.selectedCoin, amount: amt });
+          user.wallet.coins.push({ code: user.selectedCoin, amount: amt });
         } else {
-            found.amount += amt;
+          found.amount += amt;
         }
-    } else {
-        const found = user.wallet.coins.find(c => c.code === user.selectedCoin);
+      } else {
+        // SELL
+        let found = user.wallet.coins.find(c => c.code === user.selectedCoin);
         if (!found || found.amount < amt) {
-            alert("Not enough coins to sell!");
-            return;
+          alert("Not enough coins to sell!");
+          return;
         }
         found.amount -= amt;
-        const income = amt * price;
+        let income = amt * price;
         user.wallet.cash += income;
         if (found.amount <= 0) {
-            user.wallet.coins = user.wallet.coins.filter(c => c.code !== user.selectedCoin);
+          user.wallet.coins = user.wallet.coins.filter(c => c.code !== user.selectedCoin);
         }
-    }
-
-    saveStates();
-    renderTradePage();
-  });
-
-  /****************************************************
-  * Populate Wallet Table
-  ****************************************************/
-  function fillWalletTable() {
-    const user = states.users.find(u => u.name === states.active);
-    if (!user) return;
-
-    const dayData = market[user.day - 1];
-    const tbody = $(".detailed_wallet_part table tbody");
-
-    tbody.find("tr:gt(0)").remove();
-
-    user.wallet.coins.forEach(wcoin => {
-        const cInfo = coins.find(c => c.code === wcoin.code);
-        const cName = cInfo ? cInfo.name : wcoin.code;
-        const cData = dayData?.coins.find(cd => cd.code === wcoin.code);
-        const lastClose = cData ? cData.close : 0;
-        const subtotal = wcoin.amount * lastClose;
-
-        const row = `
-            <tr>
-                <td>${cName}</td>
-                <td>${wcoin.amount.toFixed(6)}</td>
-                <td>$${subtotal.toFixed(2)}</td>
-                <td>$${lastClose}</td>
-            </tr>
+      }
+  
+      saveStates();
+      renderTradePage();
+    });
+  
+    // Cüzdan tablosunu doldur
+    function fillWalletTable() {
+      let user = states.users.find(u => u.name === states.active);
+      if (!user) return;
+  
+      let dayData2 = market[user.day - 1];
+      let tbody = $(".detailed_wallet_part table tbody");
+  
+      // Dollar satırından sonrasını temizle
+      tbody.find("tr:gt(0)").remove();
+  
+      user.wallet.coins.forEach((wcoin) => {
+        let cInfo = coins.find(c => c.code === wcoin.code);
+        let cName = cInfo ? cInfo.name : wcoin.code;
+        let cData = dayData2?.coins.find(cd => cd.code === wcoin.code);
+        let lastClose = cData ? cData.close : 0;
+        let subtotal = wcoin.amount * lastClose;
+        let row = `
+          <tr>
+            <td>${cName}</td>
+            <td>${wcoin.amount.toFixed(6)}</td>
+            <td>$${subtotal.toFixed(2)}</td>
+            <td>$${lastClose}</td>
+          </tr>
         `;
         tbody.append(row);
-    });
-
-    const sumCoins = user.wallet.coins.reduce((sum, wc) => {
-        const cData = dayData?.coins.find(cd => cd.code === wc.code);
-        return cData ? sum + wc.amount * cData.close : sum;
-    }, 0);
-
-    const totalVal = user.wallet.cash + sumCoins;
-    $(".wallet_part").text(`$${totalVal.toFixed(2)}`);
-  }
-
-  /****************************************************
-  * Format Date
-  ****************************************************/
-  function formatDayDate(dayNum) {
-    const index = dayNum - 1;
-    if (index < 0 || index >= market.length) return "???";
-
-    const rawDate = market[index].date;
-    const [dd, mm, yyyy] = rawDate.split("-");
-
-    const monthNames = [
+      });
+  
+      // Toplam cüzdan değeri
+      let sumCoins = 0;
+      user.wallet.coins.forEach((wc) => {
+        let cData = dayData2?.coins.find(cd => cd.code === wc.code);
+        if (cData) {
+          sumCoins += wc.amount * cData.close;
+        }
+      });
+      let totalVal = user.wallet.cash + sumCoins;
+      $(".wallet_part").text(`$${totalVal.toFixed(2)}`);
+    }
+  
+    /****************************************************
+     * 13) Tarih Formatlama
+     ****************************************************/
+    function formatDayDate(dayNum) {
+      let index = dayNum - 1;
+      if (index < 0 || index >= market.length) return "???";
+      let rawDate = market[index].date; // "02-01-2021"
+      let [dd, mm, yyyy] = rawDate.split("-");
+      let monthNames = [
         "January", "February", "March",
         "April", "May", "June",
         "July", "August", "September",
         "October", "November", "December"
-    ];
-
-    const monIndex = parseInt(mm, 10) - 1;
-    return `${dd} ${monthNames[monIndex]} ${yyyy}`;
-  }
-
-});
+      ];
+      let monIndex = parseInt(mm, 10) - 1;
+      return `${dd} ${monthNames[monIndex]} ${yyyy}`;
+    }
+  }); // document.ready
   
