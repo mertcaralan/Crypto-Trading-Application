@@ -25,11 +25,6 @@
 
 The homepage introduces the platform and gives a brief overview of its features. It contains links to the following sections:
 
-- **Team Members**: View the developers and contributors behind the project:
-  - **Mert Çaralan**
-  - **Zeynep Günal**
-- **About**: Learn more about the project and how it simulates cryptocurrency trading.
-
 ### 🔍 **User Profiles**
 
 The **User Profile Management** feature allows users to create and manage multiple profiles for a personalized trading experience. Here’s how it works:
